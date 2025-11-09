@@ -72,23 +72,6 @@
       }, { passive: true });
     })();
   </script>
-<script>
-  import Hls from 'https://cdn.jsdelivr.net/npm/hls.js@1.5.7/dist/hls.min.js';
-
-function loadStream(url) {
-  const video = document.getElementById('video');
-  if (Hls.isSupported()) {
-    const hls = new Hls({ lowLatencyMode: true });
-    hls.loadSource(url);
-    hls.attachMedia(video);
-    hls.on(Hls.Events.MANIFEST_PARSED, () => video.play().catch(() => {}));
-  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-    video.src = url;
-    video.play().catch(() => {});
-  }
-}
-
-</script>
 
 </body>
 
