@@ -9,70 +9,13 @@
   <script src="app.js" defer></script>
 </head>
 <body>
-  <!-- bande de survol fixe -->
-  <div class="hover-topzone" aria-hidden="true"></div>
-
-  <!-- barre de contrôle masquée par défaut -->
-  <header class="controls" role="region" aria-label="Contrôles">
-    <!-- ... tes contrôles existants ... -->
-  </header>
-
-  <!-- zone player full-viewport -->
-  <main id="app" class="player-root">
-    <div class="player-wrap">
-      <video id="video" playsinline controls></video>
-      <!-- si tu utilises Hls.js, tu continues à attacher la source à #video -->
+  <div class="controls">
+    <strong>MultiChannel Player</strong> — survole le haut pour voir les contrôles.
+  </div>
+  <main>
+    <div id="player" class="player-host">
+      <video playsinline controls autoplay></video>
     </div>
   </main>
-
-  <!-- fix mobile: hauteur viewport fiable -->
-  <script>
-    (function () {
-      function setVH() {
-        document.documentElement.style.setProperty('--vh', window.innerHeight + 'px');
-      }
-      setVH();
-      let t;
-      window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(setVH, 100); }, { passive: true });
-      window.addEventListener('orientationchange', () => { setTimeout(setVH, 200); }, { passive: true });
-    })();
-  </script>
-
-  <!-- fallback d'ouverture au survol/clic (desktop + mobile) -->
-  <script>
-    (function () {
-      const controls = document.querySelector('.controls');
-      const hoverZone = document.querySelector('.hover-topzone');
-      if (!controls || !hoverZone) return;
-
-      let hideTimer;
-      window.addEventListener('mousemove', (e) => {
-        if (e.clientY <= 24) {
-          controls.classList.add('open'); document.body.classList.add('has-controls-visible');
-          clearTimeout(hideTimer);
-        } else if (!controls.matches(':hover')) {
-          clearTimeout(hideTimer);
-          hideTimer = setTimeout(() => {
-            controls.classList.remove('open'); document.body.classList.remove('has-controls-visible');
-          }, 400);
-        }
-      });
-
-      window.addEventListener('touchstart', (e) => {
-        const t = e.touches && e.touches[0]; if (!t) return;
-        if (t.clientY <= 60) {
-          controls.classList.add('open'); document.body.classList.add('has-controls-visible');
-          clearTimeout(hideTimer);
-          hideTimer = setTimeout(() => {
-            if (!controls.matches(':hover')) {
-              controls.classList.remove('open'); document.body.classList.remove('has-controls-visible');
-            }
-          }, 3000);
-        }
-      }, { passive: true });
-    })();
-  </script>
-
 </body>
-
 </html>
